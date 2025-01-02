@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Download Page as PDF</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+    }
+    .container {
+      border: 1px solid #ccc;
+      padding: 20px;
+      background-color: #f9f9f9;
+    }
+    button {
+      margin-top: 20px;
+      padding: 10px 20px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <div class="container" id="content">
+    <h1>Sample Content</h1>
+    <p>This is an example of the page content that will be saved as a PDF.</p>
+    <p>Feel free to modify the content and styles!</p>
+  </div>
+  <button onclick="downloadPDF()">Download as PDF</button>
+
+  <script>
+    async function downloadPDF() {
+      // Get the content to capture
+      const content = document.getElementById('content');
+
+      // Use html2canvas to capture the screenshot
+      const canvas = await html2canvas(content);
+
+      // Convert the canvas to an image
+      const imgData = canvas.toDataURL('image/png');
+
+      // Create a jsPDF instance
+      const { jsPDF } = window.jspdf;
+      const pdf = new jsPDF();
+
+      // Add the image to the PDF (A4 size dimensions: 210x297 mm)
+      const imgWidth = 210;
+      const imgHeight = (canvas.height * imgWidth) / canvas.width;
+      pdf.addImage(imgData, 'PNG', 0, 0, imgWidth, imgHeight);
+
+      // Save the PDF
+      pdf.save('page.pdf');
+    }
+  </script>
+</body>
+</html>
+
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <div id="cardsContainer "></div>
+  <script src="./data.js"></script>
+</body>
+</html> -->
